@@ -397,18 +397,20 @@ def main():
     app.add_handler(CommandHandler("senddata", senddata_cmd))
     app.add_handler(CommandHandler("execcurl", execcurl_cmd))
     app.add_handler(CommandHandler("status", status_cmd))
-    # fallback: any text message from admin will be acknowledged
     app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), echo_message))
 
-    logger.info("Bot starting...")
-    app.run_polling()
+    import os
+    PORT = int(os.environ.get("PORT", "10000"))
+    WEBHOOK_URL = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'ssc-4xnu.onrender.com')}"
 
-if __name__ == "__main__":
-    # Webhook URL তোমার server ডোমেইন বা পাবলিক URL বসাও
-    WEBHOOK_URL = "https://render.com/webhook"
+    print(f"🚀 Webhook running on port {PORT}, URL={WEBHOOK_URL}")
+
     app.run_webhook(
         listen="0.0.0.0",
-        port=8080,
-        url_path="",
-        webhook_url=WEBHOOK_URL,
+        port=PORT,
+        webhook_url=f"{WEBHOOK_URL}/webhook"
     )
+
+
+if __name__ == "__main__":
+    main()

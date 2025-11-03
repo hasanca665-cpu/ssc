@@ -404,4 +404,11 @@ def main():
     app.run_polling()
 
 if __name__ == "__main__":
-    main()
+    # Webhook URL তোমার server ডোমেইন বা পাবলিক URL বসাও
+    WEBHOOK_URL = "https://render.com/webhook"
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=8080,
+        url_path="",
+        webhook_url=WEBHOOK_URL,
+    )
